@@ -1,0 +1,310 @@
+---
+title: 'Lista 2'
+subtitle: 'Geometria Analítica 2021.1'
+author: 'Prof. Fernando Náufel'
+email: 'https://fnaufel.github.io/'
+date: ' (v. `r format(Sys.Date(), "%d/%m/%Y")`)'
+lang: 'pt'
+output: 
+  rmdformat::fnaufel_rmd_format:
+    theme: readable # https://bootswatch.com/3/readable/
+    highlight: pygment
+    toc: false
+    toc_depth: 2
+    toc_float: false
+    number_sections: false
+    fig_caption: true
+    df_print: paged
+    self_contained: true
+    code_download: false
+    # code_folding: show
+    # keep_md: false
+    # includes:
+    #   in_header: header.html
+    #   before_body: doc_prefix.html
+    #   after_body: doc_suffix.html
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+opts_chunk$set(
+  echo = FALSE, 
+  # collapse = TRUE,
+  # cache = TRUE,
+  out.width = "90%",
+  fig.align = 'center',
+  fig.width = 7,
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+
+# Supress crayon output
+options(crayon.enabled = FALSE)
+
+# Useful libraries
+library(glue)
+library(patchwork)
+library(latex2exp)
+library(kableExtra)
+
+options(knitr.kable.NA = '')
+
+# For nice dataframe summaries
+library(summarytools)
+st_options(
+  plain.ascii = FALSE,
+  dfSummary.varnumbers = FALSE,
+  dfSummary.style = 'grid',
+  dfSummary.graph.magnif = .75
+)
+
+# Tidy!
+library(tidyverse)
+
+# Sober theme for ggplot
+theme_set(
+  theme_linedraw() +                         # Set simple theme for ggplot
+    theme(                                   # with some tweaks
+      axis.title.y.left = element_text(
+         angle = 0,                          # Never rotate y axis title
+         margin = margin(r = 20),            # Separate y axis title a little 
+         vjust = .5                          # Leave y axis title in the middle
+      ),
+      axis.title.y.right = element_text(
+         angle = 0,                          # Never rotate y axis title
+         margin = margin(l = 20),            # Separate y axis title a little
+         vjust = .5                          # Leave y axis title in the middle
+      ),
+      axis.ticks.y.right = element_blank(),  # No ticks on secondary y axis
+      axis.title.x.bottom = element_text(
+         margin = margin(t = 20)             # Separate x axis title a little 
+      ),
+      axis.line = element_blank(),           # No axis lines
+      panel.border = element_blank(),        # No frame
+      panel.grid.minor = element_blank()     # No grid minor lines
+    )
+)
+
+# Avoid scientific notation and use a comma as decimal separator
+options(
+  scipen = 15,
+  OutDec = ','
+)
+
+# Format a number with thousand separators (default point)
+# and decimal comma enclosed in curly braces for LaTeX printing.
+# CAREFUL: if called outside math mode, will print the braces!
+fm <- function(x, big = '.', decimal = '{,}', ...) {
+  if (!is.numeric(x)) {
+    x
+  } else {
+    prettyNum(x, big.mark = big, decimal.mark = decimal, ...)
+  }
+
+}
+
+# Set this as a hook for inline R code
+knitr::knit_hooks$set(inline = fm)
+
+
+# To center the results of a chunk (image, video etc.)
+# Usage: 
+#         out.extra=center()
+#         
+center <- function(){
+  
+  if (is_html_output()) {
+    'class="center"'
+  }
+  
+}
+
+
+# To embed YT videos in HTML and the link (centered) in LaTeX
+embed_yt <- function(code) {
+
+  if (is_html_output()) {
+    include_url(
+      paste0(
+        'https://www.youtube.com/embed/',
+        code
+      )
+    )
+  } else {
+    cat(
+      paste0(
+        '```{=latex}\n',
+        '\\begin{center} \\url{https://youtu.be/',
+        code,
+        '} \\end{center}\n',
+        '```'
+      )
+    )
+  }
+  
+}
+
+```
+
+```{js javascript-init, echo=FALSE}
+
+// Make off-site links open in a new window/tab
+function changeTargets() {
+  $("a").attr(
+    "target", function() {
+      // Load local links locally
+      if (this.host == location.host) return "_self"
+      // Load off-site links in a new window
+      else return "_blank";
+    }
+  );
+}
+
+// Execute when document is ready
+$(
+  changeTargets
+)
+```
+
+
+# Instruções
+
+* Fique à vontade para consultar os coleguinhas e para usar programas como o Geogebra, mas [somente soluções *analíticas* serão aceitas --- nada de responder no olhômetro.]{.hl}
+
+* Documente da forma mais clara possível [todos os passos]{.hl} da resolução de cada questão.
+
+* Entregue [(via Moodle)]{.hl} sua resolução escrita no formato que você preferir: manuscrito escaneado ou fotografado, documento gerado via $\LaTeX$ etc. O importante é que a resolução esteja legível. [Se você for fotografar sua resolução, use um aplicativo como [Clear Scan](https://play.google.com/store/apps/details?id=com.indymobileapp.document.scanner) para gerar um resultado melhor.]{.hl}
+
+* Além da resolução por escrito, entregue também [(via Moodle)]{.hl} um arquivo contendo um vídeo de no máximo 5 minutos onde você explica em detalhes a resolução de uma parte da sua questão.
+
+* Bom trabalho.
+
+
+# Questão única: construindo uma casa
+
+[Considere $n$ o seu número na lista de alunos da sua turma.]{.hl} 
+
+[Veja o seu número nesta lista.](#nums)
+
+Você vai achar equações para o chão, as paredes e o telhado de uma casa no $\mathbb{R}^3$.
+
+::: {.rmdimportant}
+
+Em todos os seus cálculos e respostas, [use frações e radicais.]{.hl} 
+
+[Não use valores numéricos com vírgulas decimais em momento algum.]{.hl}
+
+:::
+
+
+## Chão
+
+* O chão da casa está no plano que contém o ponto $A = (1, -1, 0)$ e que é normal ao vetor $\vec v = \left(1, 1, n\right)$. 
+
+* Observe que o chão da casa não é horizontal --- i.e., [não é o plano $XY$.]{.hl}
+
+* Ache a equação [cartesiana]{.hl} deste plano.
+
+* O chão da casa é um quadrado contido neste plano. 
+
+* O ponto $A$ é um dos cantos da casa --- i.e., onde o chão e duas das paredes se encontram. 
+
+* O outro canto da casa é o ponto $C = \left(-1, 1, 0\right)$. 
+
+* O segmento $\overline{AC}$ é a diagonal do chão.
+
+* Ache a área do chão da casa.
+
+* Ache as coordenadas dos outros dois cantos da sala (pontos $B$ e $D$). 
+
+  Dica: o que você sabe sobre o ponto $B$ é o que você precisa para descobrir as suas coordenadas.
+  
+  1. $B$ pertence ao plano do chão.
+  
+  2. A distância de $A$ a $B$ é igual ao lado do quadrado.
+  
+  3. A distância de $C$ a $B$ é igual ao lado do quadrado.
+  
+  Como, a partir destas informações, você vai chegar a uma equação do segundo grau, você também vai ganhar, de presente, as coordenadas de $D$, que, afinal, é um ponto que também satisfaz as três condições acima!
+  
+  Para padronizar as respostas, [tome como ponto $B$ o ponto com $x$ e $y$ positivos, e como ponto $D$ o ponto com $x$ e $y$ negativos]{.hl}.
+
+* Ache as equações paramétricas das quatro retas que são as interseções das paredes com o chão --- i.e., as retas que contêm os rodapés da casa.
+
+* Neste momento, a situação é a da figura abaixo:
+
+  ![](chao.png)
+
+
+## Paredes
+
+* As quatro paredes, como de costume, estão contidas em planos perpendiculares ao chão.
+
+* Ache as equações [paramétricas]{.hl} destes quatro planos.
+
+* A situação agora é esta (limitando os planos das paredes a valores específicos dos parâmetros):
+
+  ![](paredes.png)
+
+* Para gerar cada parede no Geogebra, usei [o comando *Surface*](https://wiki.geogebra.org/en/Surface_Command), que recebe três equações paramétricas (de $x$, de $y$, e de $z$), os nomes dos dois parâmetros, e os valores mínimos e máximos para cada parâmetro. 
+
+* Você vai ganhar um [ponto extra]{.hl} se mostrar, em um vídeo separado (de até 5 minutos), como fazer isso com o comando *Surface* no Geogebra.
+
+* Ou seja, escreva chamadas do comando *Surface* que desenhem as paredes sem ultrapassar os limites dos cantos da casa e com exatamente $1$ unidade de altura.
+
+
+## Teto
+
+* O vetor $\vec v = \left(1, 1, n\right)$ aponta do chão para o teto.
+
+* Como de costume, o teto é paralelo ao chão.
+
+* O teto fica a $1$ unidade de distância do chão.
+
+* Ache as coordenadas dos pontos $A'$, $B'$, $C'$ e $D'$, que são os cantos do teto diretamente acima de $A$, $B$, $C$ e $D$, respectivamente.
+
+  Dica: o vetor $\overrightarrow{AA'}$ é unitário e tem a mesma direção de um vetor cujas coordenadas você já conhece.
+
+* Ache a equação [cartesiana]{.hl} do plano que contém o teto.
+
+
+## Telhado
+
+* O telhado é como na figura:
+
+  ![](telhado.png)
+  
+* A distância entre o teto e o ponto mais alto do telhado, medida a partir do ponto médio do segmento $\overline{A'B'}$, é de $\frac 1 2$ unidade.
+
+* Ache as equações [cartesianas]{.hl} dos dois planos que contêm os dois lados do telhado.
+
+* Ache a equação da reta $r$, indicada na figura acima, que contém a interseção entre os dois lados do telhado. 
+
+  Dica: use o produto vetorial.
+
+
+# Números dos alunos, por matrícula { #nums }
+
+```{r}
+set.seed(1234)
+
+matrícula <- c(
+  220060041, 319060003, 220060042, 121060028, 121060002, 121060009, 121060019,    218060076, 121060020, 218060072, 121060010, 121060023, 219060057, 121060003,    120060016, 121060004, 121060001, 121060014, 121060007, 219060078, 119060020,    120060031, 121060006, 121060012, 121060025, 121060017, 119060022, 120060012,    119060029, 121060008, 121060022, 121060005, 121060021, 120060035, 121060016,    121060013, 121060011, 121060029, 318060036, 121060015, 119060034, 220060056,    121060024, 120060018, 120060032, 121060026, 220060070
+)
+
+n <- sample(1:length(matrícula))
+
+df <- tibble(matrícula, n) %>% 
+  arrange(matrícula)
+
+df %>% kbl() %>% 
+kable_paper(
+  c('striped', 'hover'),
+  full_width = FALSE
+)
+```
+
+
+<div style='height: 1000px'></div>
