@@ -1,5 +1,5 @@
 ---
-title: 'Lista 1'
+title: 'Lista 1: respostas'
 subtitle: 'Geometria Analítica 2022.1'
 author: 'Prof. Fernando Náufel'
 email: 'https://fnaufel.github.io/'
@@ -48,6 +48,17 @@ source(
 library(exercises)
 exercises::iniciar()
 ```
+
+<div style='height: 60px'></div>
+
+
+::: {.rmdtip latex=1}
+
+### Applet Geogebra {-}
+
+[Clique aqui para acessar o *applet* Geogebra com as respostas.](https://www.geogebra.org/m/cjqwn6rz)
+
+:::
 
 
 # Instruções
@@ -332,7 +343,7 @@ knitr::include_graphics('casa2d.png')
   
   * Vamos usar $\overrightarrow{\text{parede}_U} = \left( \frac{-y_B}{12}, \frac{x_B}{12}\right)$. Perceba que, como $x_B$ e $y_B$ eram ambos maiores que zero, os sinais das coordenadas ficam como queremos.
   
-  * Como $\overrightarrow{\text{parede}_U}$ é unitário, basta multiplicá-lo por $4$ e somar o resultado às coordenadas de $A$ para achar o ponto $D$:
+  * [Como $\overrightarrow{\text{parede}_U}$ é unitário, basta multiplicá-lo por $4$ e somar o resultado às coordenadas de $A$ para achar o ponto $D$:]{.hl}
   
     $$
     D = (0, 0) + 4 \cdot \left( \frac{-y_B}{12}, \frac{x_B}{12}\right) = \left( \frac{-y_B}{3}, \frac{x_B}{3}\right)
@@ -639,7 +650,7 @@ knitr::include_graphics('casa2d.png')
   * O que dá (usando uma calculadora):
   
     $$
-    \theta = \arccos \left( -\frac45 \right) \approx 144^\circ
+    \theta = \arccos \left( -\frac45 \right) \approx 143^\circ
     $$
   
   `r fim_resposta()`
@@ -679,6 +690,60 @@ knitr::include_graphics('casa2d.png')
 * A [altura da porta]{.hl} é [$1/6$ da largura da casa]{.hl}.
 
 * Calcule as [coordenadas de $H$ e $I$]{.hl}.
+
+  `r inicio_resposta()`
+  
+  * Primeiro, achamos os pontos $F$ e $G$.
+  
+  * A largura da porta é $12/3 = 4$.
+  
+  * Como a porta está centralizada, 
+  
+    $$
+    F = A + 4 \cdot \overrightarrow{AB_U} 
+    = (0, 0) + 4 \cdot \left( \frac{x_B}{12}, \frac{y_B}{12} \right)
+    = \left( \frac{x_B}{3}, \frac{y_B}{3} \right)
+    $$
+    e
+    
+    $$
+    G = A + 8 \cdot \overrightarrow{AB_U} 
+    = (0, 0) + 8 \cdot \left( \frac{x_B}{12}, \frac{y_B}{12} \right)
+    = \left( \frac{2x_B}{3}, \frac{2y_B}{3} \right)
+    $$
+    
+  * A altura da porta é $12/6 = 2$.
+  
+  * "Subindo" $2$ unidades na direção de $\overrightarrow{\text{parede}_U}$, a partir de $G$, chegamos a $H$:
+    
+    $$
+    \begin{align}
+    H 
+    &= G + 2 \cdot \overrightarrow{\text{parede}_U} \\
+    &= 
+    \left( \frac{2x_B}{3}, \frac{2y_B}{3} \right) +
+    2 \cdot \left( \frac{-y_B}{12}, \frac{x_B}{12}\right) \\
+    &=
+    \left( \frac{4x_B - y_B}{6}, \frac{x_B + 4y_B}{6} \right)
+    \end{align}
+    $$
+
+  * "Subindo" $2$ unidades na direção de $\overrightarrow{\text{parede}_U}$, a partir de $F$, chegamos a $I$:
+    
+    $$
+    \begin{align}
+    I 
+    &= F + 2 \cdot \overrightarrow{\text{parede}_U} \\
+    &= 
+    \left( \frac{x_B}{3}, \frac{y_B}{3} \right) +
+    2 \cdot \left( \frac{-y_B}{12}, \frac{x_B}{12}\right) \\
+    &=
+    \left( \frac{2x_B - y_B}{6}, \frac{x_B + 2y_B}{6} \right)
+    \end{align}
+    $$
+
+  
+  `r fim_resposta()`
 
 
 # Números dos alunos, por matrícula { #nums }
